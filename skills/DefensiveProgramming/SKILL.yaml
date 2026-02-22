@@ -1,0 +1,12 @@
+title: Defensive Programming
+aliases: [DefensiveCoding, RobustCoding]
+tags: [engineering, principles, quality]
+keywords:
+  - "[[Software Engineering]]"
+  - "[[Error Handling]]"
+collection: "[[Skills]]"
+created: 2026-02-18
+updated: 2026-02-18
+related:
+  - "[[RustDevelopment]]"
+  - "[[TestDrivenDevelopment]]"

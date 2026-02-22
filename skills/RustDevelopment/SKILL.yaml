@@ -1,0 +1,13 @@
+title: Rust Development
+aliases: [RustConventions, ForgeRust]
+tags: [rust, development, forge-core]
+keywords:
+  - "[[Forge Framework]]"
+  - "[[Rust]]"
+collection: "[[Skills]]"
+created: 2026-02-18
+updated: 2026-02-18
+related:
+  - "[[ModuleArchitect]]"
+  - "[[DefensiveProgramming]]"
+  - "[[TestDrivenDevelopment]]"

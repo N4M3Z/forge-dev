@@ -1,0 +1,28 @@
+skills:
+    claude:
+        CodeCleanup:
+        DefensiveProgramming:
+        Git:
+        RustDevelopment:
+        TestDrivenDevelopment:
+
+    gemini:
+        CodeCleanup:
+        DefensiveProgramming:
+        Git:
+        RustDevelopment:
+        TestDrivenDevelopment:
+
+    codex:
+        CodeCleanup:
+        DefensiveProgramming:
+        Git:
+        RustDevelopment:
+        TestDrivenDevelopment:
+
+    opencode:
+        CodeCleanup:
+        DefensiveProgramming:
+        Git:
+        RustDevelopment:
+        TestDrivenDevelopment:
