@@ -1,7 +1,5 @@
 # forge-dev Makefile
 
-# Universal skills (deployed to all providers)
-SKILLS   = CodeCleanup DefensiveProgramming Git RustDevelopment TestDrivenDevelopment
 SKILL_SRC = skills
 LIB_DIR  = $(or $(FORGE_LIB),lib)
 
