@@ -158,3 +158,4 @@ Present the message as a preview option so the user can approve, edit, or reject
 - Follow the /Git skill conventions for commit messages and staging
 - If the issue is a feature request (not a bug), confirm scope with the user before implementing
 - **ReviewComment**: always confirm public messages before posting (see above)
+- For GitHub operations beyond the issue→PR workflow (releases, Actions, repo settings), see /GitHub

@@ -73,6 +73,7 @@ git submodule foreach --quiet 'if [ -n "$(git status --porcelain)" ]; then echo 
 - Title under 70 characters — details go in the body
 - Body format: `## Summary` (1-3 bullets) + `## Test plan` (checklist)
 - Create from a feature branch, never directly from main
+- For merge strategies, review workflows, and PR management, see /GitHub
 
 ## Generated Files
 
