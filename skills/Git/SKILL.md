@@ -25,6 +25,18 @@ Keep the first line under 72 characters. Add a blank line and body for context w
 
 **Never** add `Co-Authored-By` trailers unless the user explicitly asks.
 
+**Never** use heredocs (`<<EOF`) in commit commands. Use plain quoted strings:
+
+```bash
+# Single-line
+git commit -m "fix: claudeignore submodule plugin discovery"
+
+# Multi-line (multiple -m flags — first is title, rest are body paragraphs)
+git commit -m "fix: the title" -m "Body paragraph with context."
+```
+
+Heredocs bypass the RTK rewrite hook, pollute permission prompts, and are harder to read.
+
 ## Staging
 
 - Stage specific files by name — never use `git add -A` or `git add .`
