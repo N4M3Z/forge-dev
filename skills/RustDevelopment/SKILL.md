@@ -1,9 +1,10 @@
 ---
 name: RustDevelopment
+version: 0.1.0
 description: "Rust development conventions for the Forge ecosystem — crate structure, error handling, CLI patterns, config loading, testing, and cross-platform compilation. USE WHEN writing Rust code, creating binaries, designing library APIs, or reviewing Rust implementations."
 ---
 
-# Rust Development
+# RustDevelopment
 
 Forge ecosystem Rust conventions derived from forge-core, forge-tlp, forge-reflect, forge-obsidian, and forge-journals. Follow these patterns for consistency across all modules.
 

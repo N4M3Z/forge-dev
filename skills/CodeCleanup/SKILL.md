@@ -1,5 +1,6 @@
 ---
 name: CodeCleanup
+version: 0.1.0
 description: "Proactive code cleanup — duplication removal, pattern adoption, defensive hardening, readability maximization. USE WHEN cleanup, refactor, code quality, reduce duplication, adopt patterns, readability, make code explicit, clean up code, polish code."
 ---
 
@@ -125,7 +126,7 @@ Identify WHERE defensive improvements are needed during cleanup. Apply the actua
 
 ## Workflow
 
-### Step 1: Scope
+### Scope
 
 Determine what is being cleaned up:
 
@@ -137,7 +138,7 @@ Determine what is being cleaned up:
 
 If no scope was specified, ask which file or module to clean up.
 
-### Step 2: Inventory
+### Inventory
 
 Read every file in scope. Build a table:
 
@@ -146,11 +147,11 @@ Read every file in scope. Build a table:
 
 Flag files over 150 lines, functions over 50 lines, and any TODO/FIXME markers.
 
-### Step 3: Categorize
+### Categorize
 
 Assign each finding to one of the 5 categories. Present as a grouped numbered list. If a finding spans categories, put it in the most specific one.
 
-### Step 4: Sequence
+### Sequence
 
 Order changes to minimize conflicts:
 
@@ -160,7 +161,7 @@ Order changes to minimize conflicts:
 4. **Readability** — rename and restructure for clarity
 5. **Defensive hardening** — add guards last (operates on stable code)
 
-### Step 5: Execute
+### Execute
 
 Apply changes one category at a time:
 - Show before/after for each change
@@ -168,7 +169,7 @@ Apply changes one category at a time:
 - If tests break, fix before continuing
 - Confirm with the user between categories
 
-### Step 6: Verify
+### Verify
 
 After all changes:
 - Run the full test suite

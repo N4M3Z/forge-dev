@@ -1,9 +1,10 @@
 ---
 name: DefensiveProgramming
+version: 0.1.0
 description: "Defensive programming principles for robust systems — input validation, error boundaries, fail-safe defaults, invariant checking. USE WHEN writing production code, designing APIs, handling external input, or reviewing error handling."
 ---
 
-# Defensive Programming
+# DefensiveProgramming
 
 Foundational engineering principle for all Forge ecosystem code. Every boundary is a potential failure point. Defend it.
 

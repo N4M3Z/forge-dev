@@ -1,9 +1,10 @@
 ---
 name: TestDrivenDevelopment
+version: 0.1.0
 description: "Test-driven development practices — Red-Green-Refactor cycle, test categories, coverage strategy, property-based testing. USE WHEN writing tests, designing testable APIs, or reviewing test coverage."
 ---
 
-# Test-Driven Development
+# TestDrivenDevelopment
 
 Foundational engineering principle for all Forge ecosystem code. Write the test first, then make it pass, then refine.
 

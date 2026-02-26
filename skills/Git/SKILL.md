@@ -1,5 +1,6 @@
 ---
 name: Git
+version: 0.1.0
 description: Git best practices for the Forge ecosystem. USE WHEN committing, pushing, creating PRs, or working with submodules.
 ---
 

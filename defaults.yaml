@@ -2,6 +2,7 @@ skills:
     claude:
         CodeCleanup:
         DefensiveProgramming:
+        FixIssue:
         Git:
         RustDevelopment:
         TestDrivenDevelopment:
@@ -9,6 +10,7 @@ skills:
     gemini:
         CodeCleanup:
         DefensiveProgramming:
+        FixIssue:
         Git:
         RustDevelopment:
         TestDrivenDevelopment:
@@ -16,6 +18,7 @@ skills:
     codex:
         CodeCleanup:
         DefensiveProgramming:
+        FixIssue:
         Git:
         RustDevelopment:
         TestDrivenDevelopment:
@@ -23,6 +26,7 @@ skills:
     opencode:
         CodeCleanup:
         DefensiveProgramming:
+        FixIssue:
         Git:
         RustDevelopment:
         TestDrivenDevelopment:
