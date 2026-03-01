@@ -13,7 +13,7 @@ General-purpose GitHub CLI (`gh`) reference for operations not covered by other 
 | Operation | Skill | Don't duplicate here |
 |-----------|-------|---------------------|
 | Issue triage → fix → PR → close | /FixIssue | Issue commands, PR creation templates |
-| Commit messages, staging, push, submodules | /Git | Commit conventions, staging discipline |
+| Commit messages, staging, push, governance | /VersionControl | Commit conventions, staging, rulesets, CODEOWNERS |
 | Token-optimized `gh` wrappers | /RTK | `rtk gh pr view`, `rtk gh run list`, etc. |
 | Plugin marketplace publishing | /Publish | `gh release create` for plugins |
 | Everything else | **This skill** | Repo ops, releases, CI, PR mgmt, branches, labels, API |
@@ -188,10 +188,12 @@ gh api repos/OWNER/REPO/branches --jq '.[].name'     # list all branches
 git push origin --delete branch-name                   # delete remote branch
 ```
 
-### Branch protection (via API)
+### Branch protection (legacy API)
+
+For rulesets, CODEOWNERS, and bypass actors see /VersionControl GitHub companion.
 
 ```bash
-# View protection rules
+# View legacy protection rules (returns 404 if only rulesets are configured)
 gh api repos/OWNER/REPO/branches/main/protection
 
 # Set protection (requires admin)
@@ -288,5 +290,5 @@ gh pr list --json number,title,headRefName -q '.[] | "\(.number)\t\(.title)"'
 - **Public messages**: Use AskUserQuestion before posting comments, closing issues, or creating PRs with public-facing text (same rule as /FixIssue)
 - **Destructive operations**: Confirm with user before `repo delete`, `release delete`, `branch --delete`, or visibility changes
 - **Token optimization**: Use `rtk gh` for supported commands — see /RTK for the full list and savings
-- **Commit conventions**: Follow /Git for commit messages, staging, and push policy
+- **Commit conventions**: Follow /VersionControl for commit messages, staging, and push policy
 - **Issue workflow**: Use /FixIssue for the full issue → fix → PR → close pipeline — don't reinvent it here
