@@ -82,6 +82,36 @@ Use `env:` variables instead:
   run: echo "$TITLE"
 ```
 
+## Tool Installation
+
+Prefer `apt install` over `curl` + GitHub API for CI tools. GitHub API rate limits (60 req/hr unauthenticated) cause intermittent failures.
+
+```yaml
+# fragile — rate limited, URL parsing breaks
+- run: curl -sSfL "$(curl -s https://api.github.com/repos/gitleaks/gitleaks/releases/latest | grep -o 'https://[^"]*linux_x64.tar.gz')" | tar xz -C /usr/local/bin
+
+# reliable — deterministic, no API calls
+- run: sudo apt-get install -y gitleaks
+```
+
+## prek Integration
+
+`j178/prek-action@v2` installs and runs prek. It caches hook environments across runs — stale cache entries referencing deleted files cause failures. Clear with `rm -rf ~/.cache/prek` if cache corruption is suspected.
+
+prek scans ALL `.pre-commit-config.yaml` files in the repo, not just the root. Template configs with remote `repo:` references cause failures if the referenced repo lacks `.pre-commit-hooks.yaml`.
+
+A `.pre-commit-hooks.yaml` at the repo root makes prek treat the repo as a hook source — `language: rust` triggers `cargo install` into cache.
+
+## Branch Rulesets
+
+Rulesets with required approvals block repo owners from merging their own PRs. Add the Repository Admin role as a bypass actor:
+
+```sh
+gh api repos/OWNER/REPO/rulesets/ID --method PUT --input - <<< '{
+    "bypass_actors": [{"actor_id": 5, "actor_type": "RepositoryRole", "bypass_mode": "always"}]
+}'
+```
+
 ## Conditional Steps
 
 ```yaml
