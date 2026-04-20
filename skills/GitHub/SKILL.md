@@ -294,3 +294,8 @@ gh pr list --json number,title,headRefName -q '.[] | "\(.number)\t\(.title)"'
 - **Token optimization**: Use `rtk gh` for supported commands — see /RTK for the full list and savings
 - **Commit conventions**: Follow /VersionControl for commit messages, staging, and push policy
 - **Issue workflow**: Use /FixIssue for the full issue → fix → PR → close pipeline — don't reinvent it here
+
+
+## Additional references
+
+@GitHubWorkflowAutomation.md

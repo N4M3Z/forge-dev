@@ -1,7 +1,10 @@
 ---
 name: DataVisualization
+version: 0.1.0
 description: Choose and configure visualization tools for data explorer apps. Vega-Lite for declarative charts, Chart.js for Sankey and custom visualizations, Tabulator for interactive tables.
 ---
+
+# DataVisualization
 
 Guide for selecting and configuring visualization tools in data explorer apps.
 

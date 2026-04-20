@@ -187,3 +187,8 @@ After all changes:
 - Don't gold-plate — improve the worst code, not polish the best
 - Respect existing conventions — if the codebase uses `// ---`, don't introduce `# ===`
 - Batch changes — if more than 10 changes, present in groups of 5 with user confirmation between groups
+
+
+## Additional references
+
+@CleanCode.md

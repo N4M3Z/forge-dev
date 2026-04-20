@@ -1,329 +1,446 @@
 ---
 name: RustDevelopment
-version: 0.1.0
-description: "Rust development conventions for the Forge ecosystem — crate structure, error handling, CLI patterns, config loading, testing, and cross-platform compilation. USE WHEN writing Rust code, creating binaries, designing library APIs, or reviewing Rust implementations."
+version: 0.2.0
+description: "Rust development conventions — crate structure, error handling, CLI patterns, config loading, testing, and cross-platform compilation. USE WHEN writing Rust code, creating binaries, designing library APIs, or reviewing Rust implementations."
 ---
 
 # RustDevelopment
 
-Forge ecosystem Rust conventions derived from forge-core, forge-tlp, forge-reflect, forge-obsidian, and forge-journals. Follow these patterns for consistency across all modules.
-
 ## Crate Structure
 
-Every Rust module follows this layout:
-
 ```
-module/
-├── Cargo.toml           # Package metadata, dependencies, [[bin]] entries
-├── rustfmt.toml         # Formatting config (if needed)
+crate/
+├── Cargo.toml
+├── rustfmt.toml
 ├── src/
-│   ├── lib.rs           # Library crate root — re-exports public modules
-│   ├── config.rs        # Config struct with serde + Default + load()
-│   ├── <domain>/        # Domain logic as submodules
-│   │   ├── mod.rs       # Module root with #[cfg(test)] mod tests
-│   │   └── tests.rs     # Test module (separate file, not inline)
-│   └── bin/
-│       ├── tool_a.rs    # Binary entry point — thin, delegates to lib
-│       └── tool_b.rs    # Each binary is a separate file
-└── tests/               # Integration tests (optional)
+│   ├── lib.rs           # Library crate root
+│   ├── main.rs          # Primary binary (coexists with lib.rs)
+│   ├── error.rs         # Error + ErrorKind
+│   ├── config.rs        # Config with serde + Default + load()
+│   ├── cli/             # CLI subcommand handlers (binary-only)
+│   ├── <domain>/        # Domain logic
+│   │   ├── mod.rs
+│   │   └── tests.rs     # Sibling test file
+│   └── bin/             # Additional tool binaries
+└── tests/               # Integration tests
 ```
 
-### Binary vs Library Separation
+Library code stays pure — no stdout, no `process::exit`, no env access in core logic. Binaries handle I/O boundaries.
 
-Binaries are thin wrappers. All logic lives in the library crate:
-
-```rust
-// src/bin/surface.rs — THIN entry point
-use forge_reflect::config::Config;
-use forge_reflect::surface;
-
-fn main() -> ExitCode {
-    let config = Config::load();
-    // delegate to library functions
-    if let Some(s) = surface::build_output(&config) {
-        print!("{s}");
-    }
-    ExitCode::SUCCESS
-}
-```
-
-Library code stays pure — no stdout, no process::exit, no env access in core logic. Binaries handle I/O boundaries.
-
-### Cargo.toml Conventions
-
-```toml
-[package]
-name = "forge-module"
-version = "0.1.0"
-edition = "2021"
-
-[[bin]]
-name = "tool-name"
-path = "src/bin/tool_name.rs"
-
-[dependencies]
-serde = { version = "1", features = ["derive"] }
-serde_yaml = "0.9"
-chrono = { version = "0.4", features = ["serde"] }
-regex = "1"
-clap = { version = "4", features = ["derive"] }  # only if CLI args needed
-```
-
-Use kebab-case for binary names, snake_case for source files.
-
-## Config Pattern
-
-Every module that reads configuration follows this cascade:
-
-```
-config.yaml (gitignored override) → defaults.yaml (committed) → Default impl (compiled)
-```
-
-```rust
-use serde::Deserialize;
-
-#[derive(Debug, Deserialize)]
-#[serde(default)]
-pub struct Config {
-    pub memory: MemoryConfig,
-    pub surface: SurfaceConfig,
-}
-
-impl Default for Config {
-    fn default() -> Self {
-        Self {
-            memory: MemoryConfig::default(),
-            surface: SurfaceConfig::default(),
-        }
-    }
-}
-
-impl Config {
-    pub fn load() -> Self {
-        let plugin_root = std::env::var("CLAUDE_PLUGIN_ROOT")
-            .or_else(|_| std::env::var("FORGE_MODULE_ROOT"))
-            .unwrap_or_default();
-
-        // Try config.yaml first, fall back to defaults.yaml
-        let config_path = Path::new(&plugin_root).join("config.yaml");
-        let defaults_path = Path::new(&plugin_root).join("defaults.yaml");
-
-        let path = if config_path.exists() { &config_path } else { &defaults_path };
-
-        if path.exists() {
-            let content = fs::read_to_string(path).unwrap_or_default();
-            serde_yaml::from_str(&content).unwrap_or_default()
-        } else {
-            Self::default()
-        }
-    }
-}
-```
-
-### Shared Config (apply_shared)
-
-Modules that consume `defaults.yaml shared:` section wire it through `apply_shared()`:
-
-```rust
-pub fn apply_shared(&mut self, shared: &ProjectShared) {
-    if self.journal.daily.is_empty() {
-        self.journal.daily = shared.journal.daily.clone();
-    }
-    // ... merge each field, local overrides shared
-}
-```
+Use `src/main.rs` for the primary binary. Use `src/bin/` only for secondary binaries. The primary binary declares its own modules (`mod cli;` resolves to `src/cli/mod.rs`).
 
 ## Error Handling
 
-### Library Code
+### Structured Errors
 
-Use `Result<T, E>` with descriptive error types. Prefer `thiserror` for library errors:
+Use a structured error type with kind + source chain:
 
 ```rust
-#[derive(Debug, thiserror::Error)]
-pub enum ParseError {
-    #[error("missing frontmatter delimiter in {path}")]
-    MissingDelimiter { path: String },
-    #[error("invalid YAML in {path}: {source}")]
-    InvalidYaml { path: String, source: serde_yaml::Error },
+pub struct Error {
+    kind: ErrorKind,
+    source: Option<Box<dyn std::error::Error + Send + Sync>>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ErrorKind {
+    Parse,
+    Config,
+    Transport,
+}
+
+impl Error {
+    pub fn new(kind: ErrorKind) -> Self {
+        Self { kind, source: None }
+    }
+
+    pub fn with_source(
+        kind: ErrorKind,
+        source: impl std::error::Error + Send + Sync + 'static,
+    ) -> Self {
+        Self { kind, source: Some(Box::new(source)) }
+    }
+
+    pub fn kind(&self) -> ErrorKind { self.kind }
+}
+
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}", self.kind)?;
+        if let Some(ref src) = self.source {
+            write!(f, ": {src}")?;
+        }
+        Ok(())
+    }
+}
+
+impl std::error::Error for Error {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        self.source.as_deref()
+    }
+}
+```
+
+Callers branch on `ErrorKind`, not error text. Source errors are preserved for debugging. Make `ErrorKind` `Copy` for cheap comparison.
+
+For internal retry/recovery logic, separate internal errors from public errors:
+
+```rust
+pub enum InternalError {
+    Transient(std::io::Error),
+    Fatal(Error),
+}
+
+impl InternalError {
+    pub fn is_retryable(&self) -> bool {
+        matches!(self, Self::Transient(_))
+    }
 }
 ```
 
 ### Binary Code
 
-Binaries can use `anyhow` or manual error handling. Most Forge binaries return `ExitCode`:
+Binaries return `ExitCode`:
 
 ```rust
 fn main() -> ExitCode {
-    // ExitCode::SUCCESS for normal operation
-    // ExitCode::from(2) for gate/block in hook context
-    // ExitCode::FAILURE for fatal errors
+    match run() {
+        Ok(()) => ExitCode::SUCCESS,
+        Err(e) => {
+            eprintln!("Error: {e}");
+            ExitCode::from(1)
+        }
+    }
 }
 ```
 
 ### Never Panic in Libraries
 
-Replace `.unwrap()` with `.unwrap_or_default()`, `?`, or explicit error handling. Panics in library code are bugs.
+Replace `.unwrap()` with `.unwrap_or_default()`, `?`, or explicit error handling.
 
 ## CLI Patterns
 
-### Simple Binaries (no clap needed)
-
-Most Forge binaries read stdin (hook JSON) or env vars. No CLI args:
+Use clap derive with nested enums for subcommands:
 
 ```rust
-fn main() -> ExitCode {
-    let config = Config::load();
-    let input = read_hook_input().unwrap_or_default();
-    // ...
-}
-```
-
-### Complex Binaries (use clap)
-
-When CLI args are needed, use clap derive:
-
-```rust
-use clap::Parser;
+use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
-#[command(name = "safe-read")]
+#[command(version)]
 struct Cli {
-    /// File to read
-    file: PathBuf,
-    /// Strip TLP-red sections
-    #[arg(long, default_value_t = true)]
-    strip_red: bool,
+    #[command(subcommand)]
+    command: Commands,
+}
+
+#[derive(Subcommand)]
+enum Commands {
+    Install {
+        #[command(subcommand)]
+        target: InstallTarget,
+    },
+    Validate {
+        root: Option<String>,
+    },
 }
 ```
 
-## Lazy Static Patterns
+Each subcommand dispatches to a handler module returning `ExitCode`. Business logic stays in the library.
 
-Use `OnceLock` for compiled regex and other expensive initialization:
+## Context Trait
+
+Bundle configuration as associated types in a context trait. Consumers choose concrete implementations; library code is generic:
 
 ```rust
-use std::sync::OnceLock;
+pub trait Context {
+    type Transport: Send + Sync;
+    type Storage: Store;
+    type Key: Eq + Hash + Clone + Send + Sync;
+}
 
-fn secret_regex() -> &'static Regex {
-    static RE: OnceLock<Regex> = OnceLock::new();
-    RE.get_or_init(|| Regex::new(SECRET_PATTERNS).expect("invalid regex"))
+pub struct Client<C: Context> {
+    transport: C::Transport,
+    storage: C::Storage,
 }
 ```
 
-## YAML Frontmatter Parsing
-
-The canonical pattern for parsing markdown frontmatter in Rust:
+Provide stub implementations for testing:
 
 ```rust
-pub fn extract_frontmatter_value(content: &str, key: &str) -> Option<String> {
-    let mut in_frontmatter = false;
-    for line in content.lines() {
-        if line.trim() == "---" {
-            if in_frontmatter { return None; } // end of frontmatter
-            in_frontmatter = true;
-            continue;
-        }
-        if in_frontmatter {
-            if let Some(rest) = line.strip_prefix(&format!("{key}:")) {
-                let val = rest.trim().trim_matches('"').trim_matches('\'');
-                return Some(val.to_string());
-            }
-        }
+pub struct StubContext;
+impl Context for StubContext {
+    type Transport = StubTransport;
+    type Storage = InMemoryStore;
+    type Key = String;
+}
+```
+
+## Middleware via Traits
+
+Compose request handling as trait layers:
+
+```rust
+pub trait SendRequest<Req, Res> {
+    type Err: std::error::Error + Send;
+    fn send(&self, req: Req) -> impl Future<Output = Result<Res, Self::Err>>;
+}
+```
+
+Each middleware wraps a sender and adds behavior:
+
+```rust
+pub struct RetryHandler<S: SendRequest<Req, Res>> {
+    inner: S,
+    max_retries: usize,
+}
+
+impl<S: SendRequest<Req, Res>> SendRequest<Req, Res> for RetryHandler<S> {
+    async fn send(&self, req: Req) -> Result<Res, Self::Err> {
+        // retry logic wrapping self.inner.send(req)
     }
-    None
 }
 ```
 
-For full YAML parsing, deserialize with serde_yaml. For simple key extraction (hooks, quick checks), use line-by-line parsing to avoid pulling in the full YAML parser.
+Layers compose at compile time: `App → Headers → Retry → Timeout → Transport`.
 
-### Frontmatter vs Plain YAML
+## Type-State Builder
 
-`fm_value` (from `parse` module) expects markdown frontmatter delimiters (`---`). For plain YAML files like `module.yaml` or `defaults.yaml`, use a line-by-line `yaml_value` helper instead — `fm_value` silently returns `None` on non-frontmatter YAML:
+Use type-state generics so the compiler prevents calling `.build()` before required configuration:
 
 ```rust
-fn yaml_value<'a>(content: &'a str, key: &str) -> Option<&'a str> {
-    let prefix = format!("{key}:");
-    content.lines()
-        .find(|l| l.starts_with(&prefix))
-        .and_then(|l| l.get(prefix.len()..))
-        .map(|v| v.trim().trim_matches('"').trim_matches('\''))
+pub struct Builder<Transport = (), Storage = ()> {
+    transport: Transport,
+    storage: Storage,
+    timeout: Duration,
+}
+
+impl<S> Builder<(), S> {
+    pub fn with_transport(self, t: Http) -> Builder<Http, S> {
+        Builder { transport: t, storage: self.storage, timeout: self.timeout }
+    }
+}
+
+impl<T> Builder<T, ()> {
+    pub fn with_storage(self, s: FileStore) -> Builder<T, FileStore> {
+        Builder { transport: self.transport, storage: s, timeout: self.timeout }
+    }
+}
+
+impl Builder<Http, FileStore> {
+    pub fn build(self) -> Client { /* only callable when both are set */ }
 }
 ```
 
-For nested YAML or complex structures, use `serde_yaml::from_str::<serde_yaml::Value>()` and navigate with `Value::as_mapping()` / `Mapping::get()`.
+No runtime validation, no `Option<T>` fields. Each builder method consumes `self` and returns a new type.
 
-## Cross-Platform Considerations
+## Sealed Traits
 
-### Path Handling
-
-Always use `std::path::Path` and `PathBuf`. Never construct paths with string concatenation:
+Control who can implement extension-point traits:
 
 ```rust
-// Good
-let config_path = root.join("config.yaml");
+mod internal {
+    pub trait Sealed {}
+}
 
-// Bad
-let config_path = format!("{}/config.yaml", root);
+pub trait ProvideInfo: internal::Sealed {
+    fn fingerprint(&self) -> String;
+}
+
+// Only types in this crate can implement Sealed, so only they can implement ProvideInfo.
+// For testing, gate an unsealed blanket impl:
+#[cfg(feature = "testing")]
+impl<T> internal::Sealed for T {}
 ```
 
-### File System
+## Config Pattern
 
-- Use `Path::exists()` not shell `test -f`
-- Use `fs::read_dir()` with proper error handling
-- macOS APFS is case-insensitive by default — never rely on case differences
-- Handle missing directories gracefully (create if needed, skip if optional)
-
-### Build Targets
-
-Forge binaries must compile on:
-- macOS (primary development platform)
-- Linux (CI/CD, server deployments)
-- Windows (future, via cross-compilation)
-
-Avoid platform-specific APIs unless behind `#[cfg(target_os)]` gates.
-
-## Module Integration
-
-### Hook Input
-
-Hook binaries read Claude Code's JSON payload from stdin:
+Configuration cascade: `config.yaml` (gitignored) overrides `defaults.yaml` (committed) overrides `Default` impl (compiled).
 
 ```rust
-pub fn read_hook_input() -> Option<HookInput> {
-    let stdin = std::io::stdin();
-    let input: HookInput = serde_json::from_reader(stdin.lock()).ok()?;
-    Some(input)
+#[derive(Debug, Deserialize)]
+#[serde(default)]
+pub struct Config {
+    pub database: DatabaseConfig,
+    pub server: ServerConfig,
+}
+
+impl Config {
+    pub fn load(root: &Path) -> Self {
+        let path = if root.join("config.yaml").exists() {
+            root.join("config.yaml")
+        } else {
+            root.join("defaults.yaml")
+        };
+
+        std::fs::read_to_string(&path)
+            .ok()
+            .and_then(|c| serde_yaml::from_str(&c).ok())
+            .unwrap_or_default()
+    }
 }
 ```
 
-### Exit Codes
+## Testing
 
-| Code | Meaning | Used by |
-|------|---------|---------|
-| 0 | Success / allow | All hooks |
-| 1 | Error (non-blocking) | Passive hooks |
-| 2 | Block / deny | Gate hooks (PreToolUse, Stop) |
+### Sibling Test Files
 
-## Validation Pattern (validate-module)
-
-forge-lib provides a `validate` module pattern for convention checking: pure library functions return `Vec<Check>` results, a thin CLI binary handles formatting. The `Suite` struct provides assertion helpers (`assert_eq`, `assert_contains`, `assert_match`, `assert_file_exists`, `assert_not_empty`).
-
-```rust
-pub struct Check { pub desc: String, pub passed: bool }
-pub struct Suite { pub name: String, pub checks: Vec<Check> }
-
-// Pure validation function — no I/O beyond reading module files
-pub fn validate_structure(root: &Path) -> Suite { ... }
+```
+src/parse/
+    mod.rs       # production code
+    tests.rs     # #[cfg(test)] mod tests; imported from mod.rs
 ```
 
-Consumer modules wire it via Makefile: `$(LIB_DIR)/bin/validate-module $(CURDIR)`.
+### Rustdoc
+
+Rust has a built-in documentation system — `rustdoc`. Doc comments are markdown. `cargo doc` generates HTML, `cargo test` runs code examples.
+
+Two comment styles:
+- `///` on items (functions, structs, enums)
+- `//!` at the top of a file (module-level documentation)
+
+Every public function follows this structure:
+
+```rust
+/// Split markdown content at `---` frontmatter delimiters.
+///
+/// Returns `(yaml_text, body)` if frontmatter is found.
+/// Returns `None` if the content has no frontmatter.
+///
+/// # Examples
+///
+/// ```
+/// use commands::parse;
+///
+/// let content = "---\nname: Test\n---\nBody text";
+/// let (yaml, body) = parse::split_frontmatter(content).unwrap();
+/// assert!(yaml.contains("name: Test"));
+/// ```
+///
+/// # Errors
+///
+/// This function does not return errors — it returns `None` instead.
+pub fn split_frontmatter(content: &str) -> Option<(&str, &str)>
+```
+
+Every module file starts with a `//!` block:
+
+```rust
+//! ## Parse
+//!
+//! Frontmatter extraction from markdown files. Splits content at `---`
+//! delimiters and extracts YAML key-value pairs.
+```
+
+Standard sections in doc comments:
+- Summary line (first line, one sentence)
+- Extended description (optional paragraphs)
+- `# Examples` — runnable code block (tested by `cargo test --doc`)
+- `# Errors` — when the function can fail
+- `# Panics` — when the function can panic (should be never per RUST-0001)
+
+### Integration Tests
+
+Use `assert_cmd` for binary-level tests:
+
+```rust
+#[test]
+fn version_flag() {
+    Command::cargo_bin("mytool").unwrap()
+        .arg("--version")
+        .assert()
+        .success();
+}
+```
+
+### Property-Based Tests
+
+Use `proptest` for functions with large input spaces:
+
+```rust
+proptest! {
+    #[test]
+    fn config_load_never_panics(content in ".*") {
+        let _: Config = serde_yaml::from_str(&content).unwrap_or_default();
+    }
+}
+```
 
 ## Code Style
 
-- `cargo fmt` before every commit
-- `cargo clippy` with no warnings
+### rustfmt.toml
+
+```toml
+group_imports = "One"
+imports_granularity = "Module"
+merge_derives = false
+wrap_comments = true
+```
+
+### Cargo.toml Lints
+
+```toml
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+```
+
+### `#[must_use]`
+
+Annotate types and functions whose return values should never be silently dropped:
+
+```rust
+#[must_use]
+pub struct Session { ... }
+
+#[must_use]
+pub fn validate(root: &Path) -> Suite { ... }
+```
+
+### Feature Flags
+
+Organize hierarchically. Use `dep:` prefix for optional dependencies:
+
+```toml
+[features]
+default = ["full"]
+full = ["cli", "validate"]
+cli = ["dep:clap"]
+testing = ["dep:tempfile"]
+```
+
+### OnceLock for Expensive Init
+
+```rust
+fn pattern() -> &'static Regex {
+    static RE: OnceLock<Regex> = OnceLock::new();
+    RE.get_or_init(|| Regex::new(PATTERN).expect("invalid regex"))
+}
+```
+
+### General
+
+- `cargo fmt` + `cargo clippy` before every commit
 - No `#[allow(unused)]` — remove dead code
 - Prefer iterator chains over manual loops
 - Use `if let` / `let else` over nested match arms
 - Minimize `.clone()` — borrow where possible
 - Self-documenting names — comments explain why, not what
+- Kebab-case for binary and crate names
+- Methods returning `bool` start with `is_` or `has_`
+- Full names over abbreviations
+
+## Cross-Platform
+
+- Use `std::path::Path` and `PathBuf` — never string concatenation for paths
+- macOS APFS is case-insensitive — never rely on case differences
+- `#[cfg(target_os)]` gates for platform-specific APIs
+
+
+## Additional references
+
+@RustPatterns.md

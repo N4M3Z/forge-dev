@@ -1,12 +1,22 @@
 ---
-status: "Superseded by forge-cli"
-date: 2026-02-21
+title: Modular Makefiles
+description: Centralize common module build logic in forge-lib Makefile fragments that each module includes (superseded by forge-cli)
+type: adr
+category: architecture
+tags:
+    - architecture
+    - build
+status: superseded
+created: 2026-02-21
+updated: 2026-04-17
+author: "@N4M3Z"
+project: forge-dev
+related: []
 responsible: ["@N4M3Z"]
 accountable: ["@N4M3Z"]
 consulted: []
 informed: []
-promoted: [MakefileFirst.md]
-tags: [architecture, build]
+upstream: [MakefileFirst.md]
 ---
 
 # Modular Makefiles
@@ -33,9 +43,11 @@ Each module had its own ~200-line Makefile implementing install, verify, lint, a
 
 Chosen option: **Shared Makefile fragments via `include`**. forge-lib provides `mk/common.mk`, `mk/skills/install.mk`, `mk/lint.mk` and others. Modules include them and override only what differs. A ~200-line Makefile reduces to ~20 lines of includes and module-specific targets.
 
+Superseded by the forge-cli binary, which replaces shared fragments with a single compiled tool — modules now invoke `forge` directly.
+
 ### Consequences
 
-- [+] Bug fixes and improvements propagate to all modules by updating the forge-lib submodule
-- [+] New modules get install/lint/test for free with a few includes
-- [-] Modules depend on forge-lib submodule being initialized and up to date
-- [-] Make include debugging is opaque — errors point to fragment line numbers, not the consuming Makefile
+- [+] Bug fixes and improvements propagated to all modules by updating the forge-lib submodule
+- [+] New modules got install/lint/test for free with a few includes
+- [-] Modules depended on forge-lib submodule being initialized and up to date
+- [-] Make include debugging was opaque — errors pointed to fragment line numbers, not the consuming Makefile
