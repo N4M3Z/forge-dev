@@ -17,7 +17,7 @@ forge-dev contains skills and agents adopted from community sources — currentl
 - The deployed file's `sha256` digest
 - The upstream file's `sha256` digest
 - The commit-pinned `upstream_url`
-- `ForgeAdopt` as a build input
+- `AdoptArtifact` as a build input
 
 ### How to verify
 
