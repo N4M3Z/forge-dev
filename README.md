@@ -39,13 +39,12 @@ Shell scripting conventions (`BashConventions`) live in forge-core alongside `Ma
 ## Install
 
 ```sh
-make install    # deploy skills and agents (Claude, Gemini, Codex, OpenCode)
-make verify     # check skills deployed across all providers
-make test       # validate-module convention checks
-make clean      # remove previously installed skills
+make install     # deploy skills and agents, activate git hooks
+make validate    # run the pre-commit validation chain
+make clean       # remove build artifacts
 ```
 
-Or via forge-cli directly:
+Requires the `forge` CLI on PATH ([forge-cli](https://github.com/N4M3Z/forge-cli)). Or call it directly:
 
 ```sh
 forge install --target ~ .
