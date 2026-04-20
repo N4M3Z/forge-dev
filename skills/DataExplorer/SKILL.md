@@ -1,7 +1,10 @@
 ---
 name: DataExplorer
+version: 0.1.0
 description: Build static HTML data explorer apps from SQL databases or datasets. Vega-Lite or Chart.js for charts, Tabulator for tables, vendored JS. Produces standalone HTML files suitable for SharePoint, Cloudflare Pages, or email.
 ---
+
+# DataExplorer
 
 Build standalone HTML data explorers that work without a server. The output is a set of files you can put on SharePoint, Cloudflare Pages, or send as email attachments.
 
