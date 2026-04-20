@@ -1,0 +1,28 @@
+provenance:
+    _type: https://in-toto.io/Statement/v1
+    subject:
+        - name: SKILL.md
+          digest:
+              sha256: ecb425a78a732a871edba8f19c2b0aa61481ec12c29a24afbb41dcdc27e5aad9
+    predicateType: https://slsa.dev/provenance/v1
+    predicate:
+        buildDefinition:
+            buildType: https://forge-cli/adopt/v1
+            externalParameters:
+                upstream_url: https://raw.githubusercontent.com/davila7/claude-code-templates/d8e7e60f6fa962bd7842ae2a287361b0a6477f6a/cli-tool/components/https://raw.githubusercontent.com/davila7/claude-code-templates/main/cli-tool/components/skills/development/test-fixing/SKILL.md
+            resolvedDependencies:
+                - name: upstream
+                  uri: https://raw.githubusercontent.com/davila7/claude-code-templates/d8e7e60f6fa962bd7842ae2a287361b0a6477f6a/cli-tool/components/https://raw.githubusercontent.com/davila7/claude-code-templates/main/cli-tool/components/skills/development/test-fixing/SKILL.md
+                  digest:
+                      sha256: bf15e89cb04d28ecc3286c61ff14b3f7882424dae6f22217f02aca8e15b078f1
+                - name: ForgeAdopt
+                  uri: forge-core/skills/ForgeAdopt/SKILL.md
+                  digest:
+                      sha256: bdf75d591841d6267de31ef0eceead4e74d1691596675a8db7f92f54f797beec
+        runDetails:
+            builder:
+                id: forge-cli
+                version:
+                    forge: 0.3.1
+            metadata:
+                startedOn: "2026-04-18T00:00:00Z"

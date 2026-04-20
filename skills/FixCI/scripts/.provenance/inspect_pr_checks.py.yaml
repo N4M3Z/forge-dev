@@ -1,0 +1,20 @@
+provenance:
+    _type: https://in-toto.io/Statement/v1
+    subject:
+        - name: scripts/inspect_pr_checks.py
+          digest:
+              sha256: 66d27785be9e8aaeabb74370d72b35432122bcd883fb6d8abb2475f601ba740c
+    predicateType: https://slsa.dev/provenance/v1
+    predicate:
+        buildDefinition:
+            buildType: https://forge-cli/author/v1
+            externalParameters:
+                authored_for: skills/FixCI/SKILL.md
+                reason: Upstream SKILL.md references this script but does not ship it — authored in forge-dev to make the adopted skill functional.
+        runDetails:
+            builder:
+                id: forge-dev
+                version:
+                    forge: 0.3.1
+            metadata:
+                startedOn: "2026-04-19T19:00:00Z"
