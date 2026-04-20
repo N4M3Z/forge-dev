@@ -217,6 +217,21 @@ cargo test --manifest-path <path> -- --nocapture
 MODULE_ROOT="$(pwd)" bash lib/tests/test-*.sh
 ```
 
+## Red Flags
+
+| Thought                                      | Reality                                                          |
+| -------------------------------------------- | ---------------------------------------------------------------- |
+| "Too simple to test"                         | Simple code breaks. Test takes 30 seconds.                       |
+| "I'll write tests after"                     | Tests passing immediately prove nothing.                         |
+| "Tests after achieve the same goals"         | Tests-after verify what you built. Tests-first verify what's needed. |
+| "I already manually tested it"               | Ad-hoc is not systematic. No record, can't re-run.              |
+| "Deleting X hours of work is wasteful"       | Sunk cost fallacy. Keeping unverified code is technical debt.    |
+| "Keep as reference, write tests first"       | You'll adapt it. That's testing after. Delete means delete.      |
+| "Need to explore first"                      | Fine. Throw away exploration, start with TDD.                   |
+| "Test is hard to write — design is unclear"  | Listen to the test. Hard to test means hard to use.              |
+| "TDD will slow me down"                      | TDD is faster than debugging. Pragmatic means test-first.        |
+| "This is different because..."               | It's not. Delete code. Start over with TDD.                     |
+
 ## Anti-Patterns
 
 | Anti-Pattern | Why | Fix |
