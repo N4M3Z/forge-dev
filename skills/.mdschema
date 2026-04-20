@@ -16,3 +16,19 @@ structure:
           pattern: "^# .+"
           regex: true
       allow_additional: true
+      children:
+          - heading:
+                pattern: "## Workflow Routing"
+            optional: true
+            tables:
+                - min: 1
+          - heading:
+                pattern: "## Red Flags"
+            optional: true
+            tables:
+                - min: 1
+          - heading:
+                pattern: "## Constraints"
+            optional: true
+            lists:
+                - min: 1
