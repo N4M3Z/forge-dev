@@ -7,8 +7,8 @@ forge-dev delivers developer discipline skills — code quality, testing, defens
 ```sh
 git clone https://github.com/N4M3Z/forge-dev.git
 cd forge-dev
-make install    # deploy skills to all providers
-make test       # validate module structure
+make install     # deploy skills and agents, activate git hooks
+make validate    # run the pre-commit validation chain
 ```
 
 Prerequisites:
@@ -34,7 +34,7 @@ See [forge-core Contributing](https://github.com/N4M3Z/forge-core/blob/main/CONT
 ## Validation
 
 ```sh
-make test            # via Makefile
+make validate        # via Makefile (runs the pre-commit chain)
 forge validate .     # directly
 ```
 
@@ -50,7 +50,7 @@ Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`.
 
 1. Fork and create a branch
 2. Make changes following the conventions above
-3. Run `make test`
+3. Run `make validate`
 4. Open a PR against `main`
 
 CI runs validation on every PR. The `main` branch requires passing CI before merge.
