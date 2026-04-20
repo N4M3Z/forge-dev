@@ -1,0 +1,28 @@
+provenance:
+    _type: https://in-toto.io/Statement/v1
+    subject:
+        - name: TestPressure2.md
+          digest:
+              sha256: 1937215415b0e48d6fbe4527bc48e3a6651599088b1f5c3ecf6b8f2cb3be91df
+    predicateType: https://slsa.dev/provenance/v1
+    predicate:
+        buildDefinition:
+            buildType: https://forge-cli/adopt/v1
+            externalParameters:
+                upstream_url: https://raw.githubusercontent.com/davila7/claude-code-templates/d8e7e60f6fa962bd7842ae2a287361b0a6477f6a/cli-tool/components/skills/development/systematic-debugging/test-pressure-2.md
+            resolvedDependencies:
+                - name: upstream
+                  uri: https://raw.githubusercontent.com/davila7/claude-code-templates/d8e7e60f6fa962bd7842ae2a287361b0a6477f6a/cli-tool/components/skills/development/systematic-debugging/test-pressure-2.md
+                  digest:
+                      sha256: b2030aeffba07050e8ad573ddf87486457c4a016a786bb326235bebd856f2016
+                - name: ForgeAdopt
+                  uri: forge-core/skills/ForgeAdopt/SKILL.md
+                  digest:
+                      sha256: bdf75d591841d6267de31ef0eceead4e74d1691596675a8db7f92f54f797beec
+        runDetails:
+            builder:
+                id: forge-cli
+                version:
+                    forge: 0.3.1
+            metadata:
+                startedOn: "2026-04-17T20:58:11Z"
