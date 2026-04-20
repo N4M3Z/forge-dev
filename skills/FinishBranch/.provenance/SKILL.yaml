@@ -9,10 +9,10 @@ provenance:
         buildDefinition:
             buildType: https://forge-cli/adopt/v1
             externalParameters:
-                upstream_url: https://raw.githubusercontent.com/davila7/claude-code-templates/d8e7e60f6fa962bd7842ae2a287361b0a6477f6a/cli-tool/components/https://raw.githubusercontent.com/davila7/claude-code-templates/main/cli-tool/components/skills/development/finishing-a-development-branch/SKILL.md
+                upstream_url: https://raw.githubusercontent.com/davila7/claude-code-templates/d8e7e60f6fa962bd7842ae2a287361b0a6477f6a/cli-tool/components/skills/development/finishing-a-development-branch/SKILL.md
             resolvedDependencies:
                 - name: upstream
-                  uri: https://raw.githubusercontent.com/davila7/claude-code-templates/d8e7e60f6fa962bd7842ae2a287361b0a6477f6a/cli-tool/components/https://raw.githubusercontent.com/davila7/claude-code-templates/main/cli-tool/components/skills/development/finishing-a-development-branch/SKILL.md
+                  uri: https://raw.githubusercontent.com/davila7/claude-code-templates/d8e7e60f6fa962bd7842ae2a287361b0a6477f6a/cli-tool/components/skills/development/finishing-a-development-branch/SKILL.md
                   digest:
                       sha256: dd2f82c6dc8582b621f9eb57fcb65f557f88eadf872727ac81d0840ae12c504e
                 - name: ForgeAdopt
