@@ -1,4 +1,5 @@
 name: forge-dev
 version: 0.1.0
 description: Developer discipline skills for the forge ecosystem — code quality, testing, defensive programming, git conventions.
+repository: https://github.com/N4M3Z/forge-dev
 events: []
