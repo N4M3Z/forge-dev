@@ -1,10 +1,12 @@
 ---
 name: GitHub
-version: 0.1.0
+version: 0.2.0
 description: "GitHub CLI reference — repo management, releases, Actions/CI, PR operations, branch protection, labels. USE WHEN github, gh, repo, release, actions, ci, workflow, branch protection, labels, milestones."
 ---
 
 # GitHub
+
+@GitHubActions.md
 
 General-purpose GitHub CLI (`gh`) reference for operations not covered by other skills. Always use `rtk gh` when available for token savings (see /RTK).
 
