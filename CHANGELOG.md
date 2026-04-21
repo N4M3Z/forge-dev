@@ -21,7 +21,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Changed
 
-- forge-core `ForgeAdopt/SKILL.md` — removed the 3–5 initial cap and the skills-only restriction; agents are now eligible for adoption
+- forge-core `AdoptArtifact/SKILL.md` — removed the 3–5 initial cap and the skills-only restriction; agents are now eligible for adoption
+- Provenance sidecars updated to reflect forge-core skill rename: `ForgeAdopt` → `AdoptArtifact` across agents and skill companions
 
 ### Removed
 

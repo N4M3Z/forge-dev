@@ -15,10 +15,10 @@ provenance:
                   uri: https://raw.githubusercontent.com/davila7/claude-code-templates/d8e7e60f6fa962bd7842ae2a287361b0a6477f6a/cli-tool/components/skills/development/systematic-debugging/test-pressure-3.md
                   digest:
                       sha256: 96b50a52e2c7989c9cf20fb752c47c1e9a3a70dc362f8f7989f8f5b64dac7708
-                - name: ForgeAdopt
-                  uri: forge-core/skills/ForgeAdopt/SKILL.md
+                - name: AdoptArtifact
+                  uri: forge-core/skills/AdoptArtifact/SKILL.md
                   digest:
-                      sha256: bdf75d591841d6267de31ef0eceead4e74d1691596675a8db7f92f54f797beec
+                      sha256: f672615fffe1b219d4b8200fc8e105d260bd4a1c4ba355e0a3543be9fe2373ef
         runDetails:
             builder:
                 id: forge-cli
