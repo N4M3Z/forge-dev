@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ### Removed
 
 - `BashConventions` skill (with adopted `BashPatterns.md` companion) relocated to forge-core alongside `MarkdownConventions` — general shell conventions apply to every module, not just dev discipline
+- `StatusLine` skill relocated to forge-util — managing the Claude Code statusline is tool-utility, not dev discipline
 - Legacy `Git` skill retired; commit/staging/governance content absorbed into forge-core's `VersionControl` skill (with `GitHub.md`, `GitLab.md`, `GitWorktrees.md` companions covering platform-specific repo governance)
 - `lib/` forge-lib submodule and `.gitmodules` — forge-cli's `forge` binary now handles install/assemble/validate directly, superseding the shared Makefile fragments that the submodule provided (see DEV-0004)
 - `Makefile` forge-lib include chain — replaced with a lean 4-target wrapper (`install`, `validate`, `clean`, `help`) matching forge-cli's init template

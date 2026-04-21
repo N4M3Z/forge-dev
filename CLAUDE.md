@@ -30,7 +30,6 @@ Requires the `forge` CLI on PATH ([forge-cli](https://github.com/N4M3Z/forge-cli
 | **ReceiveReview** | Process code review feedback with technical rigor — verify before implementing |
 | **RequestingCodeReview** | Author a clear, scoped request when asking for a code review |
 | **RustDevelopment** | Rust conventions — crate structure, error handling, CLI patterns, config loading |
-| **StatusLine** | Claude Code statusline — install ccline, switch themes, toggle segments |
 | **SubagentDrivenDevelopment** | Delegate independent plan tasks to subagents |
 | **SystematicDebug** | Four-phase debugging methodology — root cause before fixes |
 | **TestDrivenDevelopment** | Red-Green-Refactor, test categories, coverage strategy, anti-patterns |
