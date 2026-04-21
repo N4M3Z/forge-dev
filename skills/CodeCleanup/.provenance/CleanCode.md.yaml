@@ -1,0 +1,28 @@
+provenance:
+    _type: https://in-toto.io/Statement/v1
+    subject:
+        - name: CleanCode.md
+          digest:
+              sha256: dc2c788b67e798b8671044f0a0b266776694a5e45916a32f80ca05bdd14ac91f
+    predicateType: https://slsa.dev/provenance/v1
+    predicate:
+        buildDefinition:
+            buildType: https://forge-cli/adopt/v1
+            externalParameters:
+                upstream_url: https://raw.githubusercontent.com/davila7/claude-code-templates/d8e7e60f6fa962bd7842ae2a287361b0a6477f6a/cli-tool/components/skills/development/clean-code/SKILL.md
+            resolvedDependencies:
+                - name: upstream
+                  uri: https://raw.githubusercontent.com/davila7/claude-code-templates/d8e7e60f6fa962bd7842ae2a287361b0a6477f6a/cli-tool/components/skills/development/clean-code/SKILL.md
+                  digest:
+                      sha256: 1b212a0a59f8162587a681b16e20af5bd793e4f6c7fb7c7af2d32a7deef553fb
+                - name: ForgeAdopt
+                  uri: forge-core/skills/ForgeAdopt/SKILL.md
+                  digest:
+                      sha256: bdf75d591841d6267de31ef0eceead4e74d1691596675a8db7f92f54f797beec
+        runDetails:
+            builder:
+                id: forge-cli
+                version:
+                    forge: 0.3.1
+            metadata:
+                startedOn: "2026-04-17T20:58:11Z"

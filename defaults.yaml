@@ -1,33 +1,3 @@
-skills:
-    claude:
-        CodeCleanup:
-        DefensiveProgramming:
-        FixIssue:
-        GitHub:
-        RustDevelopment:
-        StatusLine:
-        TestDrivenDevelopment:
-
-    gemini:
-        CodeCleanup:
-        DefensiveProgramming:
-        FixIssue:
-        GitHub:
-        RustDevelopment:
-        TestDrivenDevelopment:
-
-    codex:
-        CodeCleanup:
-        DefensiveProgramming:
-        FixIssue:
-        GitHub:
-        RustDevelopment:
-        TestDrivenDevelopment:
-
-    opencode:
-        CodeCleanup:
-        DefensiveProgramming:
-        FixIssue:
-        GitHub:
-        RustDevelopment:
-        TestDrivenDevelopment:
+# forge-dev default configuration.
+# Override: create config.yaml (gitignored) with only the fields you want to change.
+---

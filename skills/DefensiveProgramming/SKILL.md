@@ -196,3 +196,8 @@ deploy_agent "$agent_file" "$dst_dir"
 | Trusting file content shape | Malformed files crash the system | Parse with error handling |
 | Hard-coded paths | Breaks cross-platform | Use config or env resolution |
 | Catch-all `_` in security match | New variant silently passes | Enumerate all variants |
+
+
+## Additional references
+
+@CodeReviewChecklist.md

@@ -1,0 +1,28 @@
+provenance:
+    _type: https://in-toto.io/Statement/v1
+    subject:
+        - name: GitHubWorkflowAutomation.md
+          digest:
+              sha256: 8e6ac56d5cb34f48e8a6fdab0606ed739c9c237312695dce30a184c932fa508a
+    predicateType: https://slsa.dev/provenance/v1
+    predicate:
+        buildDefinition:
+            buildType: https://forge-cli/adopt/v1
+            externalParameters:
+                upstream_url: https://raw.githubusercontent.com/davila7/claude-code-templates/d8e7e60f6fa962bd7842ae2a287361b0a6477f6a/cli-tool/components/skills/development/github-workflow-automation/SKILL.md
+            resolvedDependencies:
+                - name: upstream
+                  uri: https://raw.githubusercontent.com/davila7/claude-code-templates/d8e7e60f6fa962bd7842ae2a287361b0a6477f6a/cli-tool/components/skills/development/github-workflow-automation/SKILL.md
+                  digest:
+                      sha256: aaa0f9c34e193ea2d830dba25702b24164149d10ad7035d6a9cb9c291fd554b2
+                - name: ForgeAdopt
+                  uri: forge-core/skills/ForgeAdopt/SKILL.md
+                  digest:
+                      sha256: bdf75d591841d6267de31ef0eceead4e74d1691596675a8db7f92f54f797beec
+        runDetails:
+            builder:
+                id: forge-cli
+                version:
+                    forge: 0.3.1
+            metadata:
+                startedOn: "2026-04-17T20:58:11Z"
