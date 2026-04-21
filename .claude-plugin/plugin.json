@@ -1,0 +1,7 @@
+{
+    "name": "forge-dev",
+    "version": "0.1.0",
+    "description": "Developer discipline skills for the forge ecosystem",
+    "author": {"name": "Martin Zeman"},
+    "skills": ["./skills"]
+}
