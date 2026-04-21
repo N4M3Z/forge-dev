@@ -1,62 +1,49 @@
 # forge-dev
 
-> Developer discipline skills for the forge ecosystem — code quality, testing, defensive programming, git conventions.
-
-*This file follows the [install.md](https://github.com/mintlify/install-md) standard — structured instructions for AI agents to execute autonomously. Human readers: see [README.md](README.md) for conventional documentation.*
+> Developer discipline skills and agents for the forge ecosystem — code quality, testing, defensive programming, debugging, git workflows, and code review.
 
 I want you to install forge-dev for me. Execute all the steps below autonomously.
 
 ## OBJECTIVE
 
-Deploy forge-dev skills to all AI providers (Claude, Gemini, Codex, OpenCode) via Makefile.
+Deploy forge-dev skills and agents to all AI providers and activate the pre-commit validation hook.
 
 ## DONE WHEN
 
-- `make test` passes
-- `ls ~/.claude/skills/CodeCleanup/SKILL.md` (or the chosen provider directory) confirms skill deployment
-- `git config core.hooksPath` returns `.githooks`
-
-## Prerequisites
-
-- Claude Code (or another AI provider CLI)
-- `forge` CLI on PATH — install from [forge-cli](https://github.com/N4M3Z/forge-cli)
-- `shellcheck` for linting
-
-Without Rust: copy `skills/` into the provider config directory (e.g., `~/.claude/skills/`) directly.
+`make validate` exits 0 and `ls ~/.claude/skills/CodeCleanup/SKILL.md` prints the path.
 
 ## TODO
 
-- [ ] Install prerequisites (forge-cli, shellcheck)
-- [ ] Clone the repository
-- [ ] Run `make install` to deploy
-- [ ] Verify skill deployment
-- [ ] Enable git hooks
+- [ ] Install prerequisites
+- [ ] Build or install the tool
+- [ ] Verify the installation
 
 ## Steps
 
-### Clone
+### Prerequisites
+
+You need the following installed before proceeding:
 
 ```sh
-git clone https://github.com/N4M3Z/forge-dev.git
-cd forge-dev
+# check prerequisite
+forge --version
 ```
 
 ### Install
 
 ```sh
+git clone https://github.com/N4M3Z/forge-dev.git
+cd forge-dev
 make install
 ```
 
-### Verify skill deployment
+### Verify
+
+You must confirm the installation succeeded:
 
 ```sh
-ls ~/.claude/skills/CodeCleanup/SKILL.md
+# verification command that matches DONE WHEN
+make validate
 ```
 
-### Enable git hooks
-
-```sh
-git config core.hooksPath .githooks
-```
-
-EXECUTE NOW: Complete the above TODO list to achieve passing `make test`, deployed skills, and active hooks.
+EXECUTE NOW: Complete the above TODO list to achieve: `make validate` exits 0 and `ls ~/.claude/skills/CodeCleanup/SKILL.md` prints the path.

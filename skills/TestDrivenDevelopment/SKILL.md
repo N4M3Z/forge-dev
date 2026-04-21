@@ -203,18 +203,14 @@ fn fixture_agent(name: &str) -> String {
 ## Running Tests
 
 ```bash
-# All Rust tests
-cargo test --manifest-path Core/Cargo.toml
-cargo test --manifest-path Modules/forge-lib/Cargo.toml
+# All Rust tests in a workspace
+cargo test --workspace
 
-# Single test
-cargo test --manifest-path <path> -- test_name
+# Single test in a specific crate
+cargo test --manifest-path <crate>/Cargo.toml -- test_name
 
 # With output
-cargo test --manifest-path <path> -- --nocapture
-
-# Shell tests (legacy)
-MODULE_ROOT="$(pwd)" bash lib/tests/test-*.sh
+cargo test -- --nocapture
 ```
 
 ## Red Flags
