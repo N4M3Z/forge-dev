@@ -1,0 +1,28 @@
+.githooks:
+  pre-commit:
+    fingerprint: aaa2ebe74042b0f2f0169bf8587c1728d579b1223c3ec6f42e73e90f88ae4ed1
+    provenance: .githooks/.provenance/pre-commit.yaml
+.github:
+  workflows:
+    quality.yaml:
+      fingerprint: 51954ec202b730edf452ccd7e921c4318768f3f1ee1fbec93748c09fefb9b46b
+      provenance: .github/workflows/.provenance/quality.yaml
+    release.yaml:
+      fingerprint: 5983bb680dcbdd12dfcab4f499d7c2f51354b6b8404af64e5a3c3d2ae423c4b1
+      provenance: .github/workflows/.provenance/release.yaml
+LICENSE:
+  fingerprint: 57fb42fbcd0b037ce528ed8f72f1ec095d67bc6825ecf1448ff39be1fe68a4b4
+  provenance: .provenance/LICENSE.yaml
+agents:
+  .mdschema:
+    fingerprint: ae52030ed8dd0761400444b8f5f7b9de8af4677d9c84729dbdeb98719234457f
+    provenance: agents/.provenance/.mdschema.yaml
+docs:
+  decisions:
+    .mdschema:
+      fingerprint: 4b10d5655ea6f335764742173423d38a400be5b20ea96b0c620f02bef0df846c
+      provenance: docs/decisions/.provenance/.mdschema.yaml
+rules:
+  .mdschema:
+    fingerprint: 4e6c78b7d14eeef521baf44acd73a6201e76174002bff5f83c2f699f0a2e6ed8
+    provenance: rules/.provenance/.mdschema.yaml

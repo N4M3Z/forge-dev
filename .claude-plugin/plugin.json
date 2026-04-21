@@ -3,5 +3,7 @@
     "version": "0.1.0",
     "description": "Developer discipline skills for the forge ecosystem",
     "author": {"name": "Martin Zeman"},
+    "license": "EUPL-1.2",
+    "repository": "https://github.com/N4M3Z/forge-dev",
     "skills": ["./skills"]
 }
