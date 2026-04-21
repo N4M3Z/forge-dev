@@ -1,10 +1,10 @@
 ---
-name: GitHub
+name: GitHubCLI
 version: 0.2.0
 description: "GitHub CLI reference — repo management, releases, Actions/CI, PR operations, branch protection, labels. USE WHEN github, gh, repo, release, actions, ci, workflow, branch protection, labels, milestones."
 ---
 
-# GitHub
+# GitHubCLI
 
 @GitHubActions.md
 
