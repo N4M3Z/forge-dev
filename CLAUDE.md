@@ -26,11 +26,10 @@ Requires the `forge` CLI on PATH ([forge-cli](https://github.com/N4M3Z/forge-cli
 | **FixCI** | Inspect failing GitHub Actions checks, pull logs, and propose a fix plan |
 | **FixIssue** | End-to-end issue fixing — triage, diagnose, branch, PR/MR, close (GitHub + GitLab) |
 | **FixTests** | Run tests and systematically fix failing ones using smart error grouping |
-| **GitHub** | GitHub CLI reference — repos, releases, Actions/CI, PR ops, branch protection |
+| **GitHubCLI** | GitHub CLI reference — repos, releases, Actions/CI, PR ops, branch protection |
 | **ReceiveReview** | Process code review feedback with technical rigor — verify before implementing |
-| **RequestingCodeReview** | Author a clear, scoped request when asking for a code review |
+| **RequestReview** | Author a scoped review request + `CodeReview` companion with severity taxonomy and reviewer checklist |
 | **RustDevelopment** | Rust conventions — crate structure, error handling, CLI patterns, config loading |
-| **StatusLine** | Claude Code statusline — install ccline, switch themes, toggle segments |
 | **SubagentDrivenDevelopment** | Delegate independent plan tasks to subagents |
 | **SystematicDebug** | Four-phase debugging methodology — root cause before fixes |
 | **TestDrivenDevelopment** | Red-Green-Refactor, test categories, coverage strategy, anti-patterns |

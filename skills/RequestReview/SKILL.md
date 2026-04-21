@@ -1,15 +1,17 @@
 ---
-name: RequestingCodeReview
-version: 0.1.0
+name: RequestReview
+version: 0.2.0
 description: "Author a clear scoped request when asking for a code review. USE WHEN ready for review, finishing a task, opening a PR, or requesting review feedback on a piece of code."
 allowed-tools: Read, Bash
 upstream: https://raw.githubusercontent.com/davila7/claude-code-templates/main/cli-tool/components/skills/development/requesting-code-review/SKILL.md
 ---
 
 
-# Requesting Code Review
+# RequestReview
 
-Dispatch superpowers:code-reviewer subagent to catch issues before they cascade.
+@CodeReview.md
+
+Dispatch a code-reviewer subagent to catch issues before they cascade. Criteria and severity levels live in the `CodeReview` companion above.
 
 **Core principle:** Review early, review often.
 
