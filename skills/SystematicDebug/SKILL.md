@@ -17,9 +17,10 @@ Complete each phase before proceeding to the next.
 Before attempting any fix:
 
 1. **Read error messages carefully** — don't skip past errors. They often contain the exact solution. Read stack traces completely. Note line numbers, file paths, error codes.
-2. **Reproduce consistently** — can you trigger it reliably? What are the exact steps? If not reproducible, gather more data instead of guessing.
-3. **Check recent changes** — what changed that could cause this? Git diff, recent commits, new dependencies, config changes.
-4. **Trace data flow** — where does the bad value originate? What called this with the wrong input? Keep tracing upstream until you find the source. Fix at the source, not at the symptom.
+2. **Clarify the failure mode when the report comes from the user.** "Doesn't work" is ambiguous — before forming hypotheses, ask one question naming the candidate layers: "is it failing at input, parsing, validation, or integration?" In multi-step protocols (QR codes, network requests, file formats, payment standards) this single clarifying question collapses 5+ debug turns into 2. Don't assume rendering issues when the user reports invalid output — the upstream protocol/payload may be the problem.
+3. **Reproduce consistently** — can you trigger it reliably? What are the exact steps? If not reproducible, gather more data instead of guessing.
+4. **Check recent changes** — what changed that could cause this? Git diff, recent commits, new dependencies, config changes.
+5. **Trace data flow** — where does the bad value originate? What called this with the wrong input? Keep tracing upstream until you find the source. Fix at the source, not at the symptom.
 
 In multi-component systems, add diagnostic instrumentation at each component boundary before proposing fixes. Run once to gather evidence showing WHERE it breaks, then investigate that specific component.
 
