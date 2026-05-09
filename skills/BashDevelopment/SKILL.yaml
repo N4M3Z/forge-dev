@@ -1,0 +1,19 @@
+sources:
+    - https://github.com/N4M3Z/check-mac
+    - https://www.shellcheck.net/
+    - https://mywiki.wooledge.org/BashGuide
+
+title: Bash Development
+aliases: [BashConventions, ShellPatterns, ForgeShell]
+tags: [bash, shell, posix, scripting, forge-dev]
+keywords:
+    - "[[Bash]]"
+    - "[[Shell Scripting]]"
+    - "[[POSIX]]"
+collection: "[[Skills]]"
+created: 2026-04-26
+updated: 2026-04-26
+related:
+    - "[[AuditScripts]]"
+    - "[[DefensiveProgramming]]"
+    - "[[CodeCleanup]]"
