@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
+- `DomainHunt` skill with companions (`TldHacks`, `BrokerDetection`, `RegistrarGuide`, `BrandFamilyPairing`) — RDAP-based domain availability workflow, broker-listing detection, brand-family pairing strategy, registrar selection guidance
+- `bin/check-domain` — bundled RDAP-based availability checker (bash + curl + python3), source: <https://github.com/N4M3Z/check-domain>
+- `DEV-0005 Forge Ecosystem Domain Identity` ADR capturing the decision to anchor on `forgeworld.ai` with `modforge.*` and `handforged.*` sub-brands
 - LICENSE (EUPL-1.2), CONTRIBUTING.md, CODEOWNERS, INSTALL.md
 - `.gitattributes`, `.gitleaks.toml`, `.gitleaksignore`
 - `.pre-commit-config.yaml` + `.githooks/pre-commit` with forge-cli validate.sh fallback
