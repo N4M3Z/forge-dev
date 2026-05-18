@@ -1,12 +1,12 @@
 ---
-name: AuditScripts
+name: HealthChecks
 version: 0.1.0
-description: "Architecture for security and health audit scripts: standalone-runnable checks, severity ladder with UNKNOWN, key:value output contract, orchestrator dispatch, exit-code semantics. Language-agnostic; reference implementations in Bash, applies to Python and other languages. USE WHEN writing audit tools, designing check-script contracts, adding checks to tools like check-mac, reviewing audit-script architecture, or porting an audit tool between languages."
+description: "Architecture for security and health-check programs: standalone-runnable checks, severity ladder with UNKNOWN, key:value output contract, orchestrator dispatch, exit-code semantics. Language-agnostic; reference implementations in Bash, applies to Python and other languages. USE WHEN writing health checks or audit tools, designing check-script contracts, adding checks to tools like check-mac, reviewing health-check architecture, or porting a check tool between languages."
 ---
 
-# AuditScripts
+# HealthChecks
 
-A contract for writing security and health audit scripts. The same contract works in Bash, Python, or any other language that can write structured output to stdout. Reference implementation: [check-mac][CHECKMAC] (Bash). For shell-specific idioms, see the companion skill [BashDevelopment](../BashDevelopment/SKILL.md).
+A contract for writing security and health-check programs. The same contract works in Bash, Python, or any other language that can write structured output to stdout. Reference implementation: [check-mac][CHECKMAC] (Bash). For shell-specific idioms, see the companion skill [BashDevelopment](../BashDevelopment/SKILL.md).
 
 The architecture has three load-bearing pieces:
 

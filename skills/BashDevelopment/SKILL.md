@@ -8,7 +8,7 @@ description: "Bash and POSIX shell conventions for the forge ecosystem — idiom
 
 Conventions for writing bash and POSIX shell scripts in the forge ecosystem and adjacent personal projects. Reference implementation lives in [check-mac][CHECKMAC] and the build hooks under forge-core.
 
-For audit-script architecture (severity ladders, key:value output, orchestrator dispatch), see the companion skill [AuditScripts](../AuditScripts/SKILL.md).
+For health-check architecture (severity ladders, key:value output, orchestrator dispatch), see the companion skill [HealthChecks](../HealthChecks/SKILL.md).
 
 ## Idioms
 
