@@ -1,0 +1,34 @@
+provenance:
+    _type: https://in-toto.io/Statement/v1
+    subject:
+        - name: skills/WebDevelopment/SKILL.md
+          digest:
+              sha256: 7b8abf6f63977269cfe75c2bfd9f267b559e43cfab68821121d6fd4bd08d2f53
+    predicateType: https://slsa.dev/provenance/v1
+    predicate:
+        buildDefinition:
+            buildType: https://forge-cli/adopt/v1
+            externalParameters:
+                upstream_url: https://github.com/ercan-er/htmx-claude-skill/blob/02fd53acb5ec43c555c377ec0efd7058aec14811/skill/skills.md
+            resolvedDependencies:
+                - name: upstream
+                  uri: https://github.com/ercan-er/htmx-claude-skill/blob/02fd53acb5ec43c555c377ec0efd7058aec14811/skill/skills.md
+                  digest:
+                      sha256: f4154fe6b3fe79aec609a06669e7fdaebec18ddb8275050c88d9dd8638836ca8
+                - name: AdoptArtifact
+                  uri: forge-core/skills/AdoptArtifact/SKILL.md
+                  digest:
+                      sha256: 92c5e686c86d03778cbb7c6e74b5a6cebeec0d55fb58910ea8fd9b95976bc4ae
+        runDetails:
+            builder:
+                id: forge-cli
+                version:
+                    forge: 0.3.2
+            metadata:
+                startedOn: "2026-05-27T16:07:54Z"
+                transforms:
+                    - align
+                    - rescope
+                    - debrand
+                    - minimize
+                    - extract
