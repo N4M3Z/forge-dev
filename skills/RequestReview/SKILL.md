@@ -1,7 +1,7 @@
 ---
 name: RequestReview
 version: 0.2.0
-description: "Author a clear scoped request when asking for a code review. USE WHEN ready for review, finishing a task, opening a PR, or requesting review feedback on a piece of code."
+description: "Author a clear scoped request when asking for a code review. USE WHEN ready for review, finishing a task, or requesting review feedback on a piece of code. For creating the pull request itself use PullRequest."
 allowed-tools: Read, Bash
 upstream: https://raw.githubusercontent.com/davila7/claude-code-templates/main/cli-tool/components/skills/development/requesting-code-review/SKILL.md
 ---
