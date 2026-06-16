@@ -1,4 +1,9 @@
+[extend]
+useDefault = true
+
 [allowlist]
 paths = [
     "evals/baselines/.*",
+    # DefensiveProgramming teaches secure coding and contains example secrets by design.
+    "skills/DefensiveProgramming/.*",
 ]
