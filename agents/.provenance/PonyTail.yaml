@@ -1,0 +1,40 @@
+provenance:
+    _type: https://in-toto.io/Statement/v1
+    subject:
+        - name: PonyTail.md
+          digest:
+              sha256: 2d8494d89bed928f257b7f0791cee08b40fceb19cf88f3ca8fa6e99f92b97da7
+    predicateType: https://slsa.dev/provenance/v1
+    predicate:
+        buildDefinition:
+            buildType: https://forge-cli/adopt/v1
+            externalParameters:
+                upstream_url: https://raw.githubusercontent.com/DietrichGebert/ponytail/14a0d79548d4de8fc2de95c1b94bb0de63a739d3/skills/ponytail/SKILL.md
+            resolvedDependencies:
+                - name: upstream-ponytail
+                  uri: https://raw.githubusercontent.com/DietrichGebert/ponytail/14a0d79548d4de8fc2de95c1b94bb0de63a739d3/skills/ponytail/SKILL.md
+                  digest:
+                      sha256: 1316a2f3f95741d2300b116fe0c2d81ce4a9568656ed0a62643f54aaf09957f2
+                - name: upstream-ponytail-review
+                  uri: https://raw.githubusercontent.com/DietrichGebert/ponytail/14a0d79548d4de8fc2de95c1b94bb0de63a739d3/skills/ponytail-review/SKILL.md
+                  digest:
+                      sha256: 40df33b58fc6ef889b93585733feb9566b76e9586efa7f376785c1e995197ac0
+                - name: upstream-ponytail-audit
+                  uri: https://raw.githubusercontent.com/DietrichGebert/ponytail/14a0d79548d4de8fc2de95c1b94bb0de63a739d3/skills/ponytail-audit/SKILL.md
+                  digest:
+                      sha256: 5560b8e383dbe2ddfddc873a1e2bf2e586e23e0cd7d995537482b2315331f6d1
+                - name: AdoptArtifact
+                  uri: forge-core/skills/AdoptArtifact/SKILL.md
+                  digest:
+                      sha256: 722d5e82ebc093749d170b4b5c650ca523e21a52a6079bfabd912613379c1c02
+                - name: RefinePrompt
+                  uri: forge-core/skills/RefinePrompt/SKILL.md
+                  digest:
+                      sha256: d04d2610148eb9ec2589cd521f1214b6a11d033600335c0295f2fc7a472ca87c
+        runDetails:
+            builder:
+                id: forge-cli
+                version:
+                    forge: 0.3.2
+            metadata:
+                startedOn: "2026-07-11T08:35:44Z"
