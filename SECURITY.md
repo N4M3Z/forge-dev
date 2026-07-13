@@ -12,7 +12,7 @@ Expect an initial acknowledgement within 72 hours.
 
 ## Third-Party Adopted Content
 
-forge-dev contains skills and agents adopted from community sources — currently [davila7/claude-code-templates](https://github.com/davila7/claude-code-templates) (MIT). Every adopted file is pinned to a specific upstream commit SHA and ships with a SLSA provenance sidecar under `.provenance/` recording:
+forge-dev contains skills and agents adopted from community sources: [davila7/claude-code-templates](https://github.com/davila7/claude-code-templates) (MIT) and [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (MIT, © 2026 DietrichGebert). The **PonyTail** agent is fused from the latter's `ponytail`, `ponytail-review`, and `ponytail-audit` skills, each pinned in `agents/.provenance/PonyTail.yaml`. Every adopted file is pinned to a specific upstream commit SHA and ships with a SLSA provenance sidecar under `.provenance/` recording:
 
 - The deployed file's `sha256` digest
 - The upstream file's `sha256` digest

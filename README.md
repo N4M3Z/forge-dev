@@ -63,7 +63,7 @@ module.yaml           module metadata
 
 ## Provenance
 
-Several skills and all four agents were adopted from [davila7/claude-code-templates](https://github.com/davila7/claude-code-templates) (MIT). Each adopted file carries a SLSA provenance sidecar under `.provenance/` recording the upstream commit SHA, file SHA-256, and transform dependency chain. Run `forge provenance .` to audit.
+Several skills and four agents (ArchitectReviewer, CodeReviewer, ErrorDetective, RefactoringSpecialist) were adopted from [davila7/claude-code-templates](https://github.com/davila7/claude-code-templates) (MIT), each carrying a SLSA provenance sidecar under `.provenance/` recording the upstream commit SHA, file SHA-256, and transform dependency chain. The **PonyTail** agent is fused from the `ponytail`, `ponytail-review`, and `ponytail-audit` skills of [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) (MIT, © 2026 DietrichGebert), each pinned in its sidecar at `agents/.provenance/PonyTail.yaml`. Run `forge provenance .` to audit.
 
 ## License
 
