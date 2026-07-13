@@ -1,0 +1,199 @@
+#!/bin/bash
+# check-domain — Batch domain availability via RDAP
+
+set -euo pipefail
+
+readonly BOOTSTRAP_URL="https://data.iana.org/rdap/dns.json"
+readonly CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/check-domain"
+readonly BOOTSTRAP_CACHE="$CACHE_DIR/rdap-bootstrap.json"
+readonly MAPPING_CACHE="$CACHE_DIR/tld-rdap-map.txt"
+readonly BOOTSTRAP_TTL_SECONDS=86400
+readonly CURL_TIMEOUT=12
+
+usage() {
+    local prog
+    prog=$(basename "$0")
+    cat <<HELP
+Usage: $prog [options] <domain> [<domain>...]
+       $prog [options] -f <file>
+
+Checks domain availability via RDAP queries against authoritative registries.
+
+Output per domain:
+    AVAIL      Domain is not registered (RDAP 404)
+    TAKEN      Domain is registered (RDAP 200)
+    HTTP-XXX   Registry returned unexpected status
+    NO-RDAP    No public RDAP endpoint known for this TLD
+
+Options:
+    -h, --help    Show this help and exit
+    -q, --quiet   Print only AVAIL results
+    -f, --file    Read domains from file (one per line, # comments allowed)
+
+Examples:
+    $prog example.com example.dev
+    $prog forge.{ai,dev,io,build,tools}
+    $prog -q -f candidates.txt
+
+Cache: $CACHE_DIR (TTL ${BOOTSTRAP_TTL_SECONDS}s)
+HELP
+}
+
+file_mtime() {
+    stat -f %m "$1" 2>/dev/null || stat -c %Y "$1" 2>/dev/null
+}
+
+cache_fresh() {
+    [ -f "$MAPPING_CACHE" ] || return 1
+    local now mtime
+    now=$(date +%s)
+    mtime=$(file_mtime "$MAPPING_CACHE")
+    [ -n "$mtime" ] || return 1
+    [ $((now - mtime)) -lt "$BOOTSTRAP_TTL_SECONDS" ]
+}
+
+refresh_bootstrap() {
+    mkdir -p "$CACHE_DIR"
+    if ! curl -sf --max-time 15 "$BOOTSTRAP_URL" -o "$BOOTSTRAP_CACHE.tmp"; then
+        echo "warning: could not fetch IANA RDAP bootstrap from $BOOTSTRAP_URL" >&2
+        rm -f "$BOOTSTRAP_CACHE.tmp"
+        return 1
+    fi
+    mv "$BOOTSTRAP_CACHE.tmp" "$BOOTSTRAP_CACHE"
+    if ! python3 - "$BOOTSTRAP_CACHE" > "$MAPPING_CACHE.tmp" <<'PY'
+import json, sys
+with open(sys.argv[1]) as handle:
+    bootstrap = json.load(handle)
+for service in bootstrap.get("services", []):
+    suffixes, endpoints = service[0], service[1]
+    if not endpoints:
+        continue
+    primary = endpoints[0]
+    for suffix in suffixes:
+        print(f"{suffix} {primary}")
+PY
+    then
+        rm -f "$MAPPING_CACHE.tmp"
+        echo "error: failed to parse IANA RDAP bootstrap" >&2
+        return 1
+    fi
+    mv "$MAPPING_CACHE.tmp" "$MAPPING_CACHE"
+}
+
+ensure_bootstrap() {
+    if cache_fresh; then
+        return 0
+    fi
+    if refresh_bootstrap; then
+        return 0
+    fi
+    [ -f "$MAPPING_CACHE" ] && return 0
+    return 1
+}
+
+rdap_base_for_tld() {
+    awk -v tld="$1" '$1 == tld { print $2; exit }' "$MAPPING_CACHE"
+}
+
+check_one() {
+    local domain=$1 quiet=$2
+    local tld="${domain##*.}"
+    local base url code
+    base=$(rdap_base_for_tld "$tld")
+    if [ -z "$base" ]; then
+        [ "$quiet" -eq 0 ] && printf "%-30s NO-RDAP\n" "$domain"
+        return
+    fi
+    url="${base%/}/domain/$domain"
+    code=$(curl -s -o /dev/null -w "%{http_code}" --max-time "$CURL_TIMEOUT" "$url" 2>/dev/null || echo "000")
+    case "$code" in
+        404)
+            printf "%-30s AVAIL\n" "$domain"
+            ;;
+        200)
+            [ "$quiet" -eq 0 ] && printf "%-30s TAKEN\n" "$domain"
+            ;;
+        *)
+            [ "$quiet" -eq 0 ] && printf "%-30s HTTP-%s\n" "$domain" "$code"
+            ;;
+    esac
+}
+
+read_domains_from_file() {
+    local file=$1
+    [ -r "$file" ] || { echo "error: cannot read file: $file" >&2; exit 2; }
+    local line
+    while IFS= read -r line || [ -n "$line" ]; do
+        line="${line%%#*}"
+        line="${line//[[:space:]]/}"
+        [ -n "$line" ] && echo "$line"
+    done < "$file"
+}
+
+main() {
+    local quiet=0
+    local -a domains=()
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            -h|--help)
+                usage
+                exit 0
+                ;;
+            -q|--quiet)
+                quiet=1
+                shift
+                ;;
+            -f|--file)
+                shift
+                [ $# -eq 0 ] && { echo "error: -f requires a file argument" >&2; exit 2; }
+                while IFS= read -r d; do
+                    domains+=("$d")
+                done < <(read_domains_from_file "$1")
+                shift
+                ;;
+            --)
+                shift
+                while [ $# -gt 0 ]; do
+                    domains+=("$1")
+                    shift
+                done
+                ;;
+            -*)
+                echo "error: unknown option: $1" >&2
+                usage >&2
+                exit 2
+                ;;
+            *)
+                domains+=("$1")
+                shift
+                ;;
+        esac
+    done
+
+    if [ ${#domains[@]} -eq 0 ]; then
+        usage >&2
+        exit 2
+    fi
+
+    if ! command -v python3 >/dev/null 2>&1; then
+        echo "error: python3 is required (used to parse IANA RDAP bootstrap)" >&2
+        exit 1
+    fi
+
+    if ! command -v curl >/dev/null 2>&1; then
+        echo "error: curl is required" >&2
+        exit 1
+    fi
+
+    if ! ensure_bootstrap; then
+        echo "error: no RDAP bootstrap mapping available" >&2
+        exit 1
+    fi
+
+    for d in "${domains[@]}"; do
+        check_one "$d" "$quiet" &
+    done
+    wait
+}
+
+main "$@"
