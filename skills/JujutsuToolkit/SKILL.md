@@ -32,7 +32,7 @@ General rule: under jj, a git-hook-based check becomes a pre-push check (run by 
 
 ## Parallel agents
 
-Multiple agents editing one working copy still collide at the file level; jj only removes the index collision. Give each agent its own working copy sharing one store: `jj workspace add ../repo-agent-1` creates an isolated directory and `@` backed by the same history and op log. This is the jj-native replacement for the git-worktree lifecycle (no manual create / rebase / remove / delete-branch). Companions: `jj workspace list`, `jj workspace forget`.
+Multiple agents editing one working copy still collide at the file level; jj only removes the index collision. Give each agent its own working copy sharing one store: `jj workspace add .workspaces/agent-1` creates an isolated directory and `@` backed by the same history and op log. Workspaces live in `.workspaces/<name>` inside the repo, ignored by `.gitignore`; sibling directories (`../repo-<name>`) pollute the parent directory and break IDE workspace paths. This is the jj-native replacement for the git-worktree lifecycle (no manual create / rebase / remove / delete-branch). Companions: `jj workspace list`, `jj workspace forget`.
 
 ## Recovery
 
